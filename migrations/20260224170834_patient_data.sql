@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS patients (
+    id UUID PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    age INT NOT NULL,
+    card_id VARCHAR(50) UNIQUE NOT NULL,
+    gender VARCHAR(10) NOT NULL
+)
