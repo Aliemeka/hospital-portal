@@ -56,7 +56,7 @@ A RESTful API for managing hospital operations — patients, doctors, appointmen
    cargo run
    ```
 
-   The API will be available at `http://127.0.0.1:8080`.
+   The API will be available at `http://127.0.0.1:<port-in-env>`.
 
 ### API Endpoints
 
