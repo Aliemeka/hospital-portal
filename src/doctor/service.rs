@@ -30,6 +30,12 @@ pub async fn create_doctor(
     doctor_data: CreateDoctor,
 ) -> Result<Doctor, AppError> {
     let doctor = Doctor::new(doctor_data);
+    let all_days_valid = doctor.available_days.iter().all(|day| is_valid_day(day));
+    if !all_days_valid {
+        return Err(AppError::ParsingError(
+            "One or more invalid day formats in available_days".to_string(),
+        ));
+    }
     sqlx::query("INSERT INTO doctors (id, name, specialization, visiting_hours, available_days) VALUES ($1, $2, $3, $4, $5)")
         .bind(doctor.id)
         .bind(&doctor.name)
@@ -62,20 +68,20 @@ pub async fn get_available_doctors(
 
 // Check if a doctor is available on a specific day and time
 // Will use this for appointment scheduling
-pub async fn is_doctor_available(
-    state: SharedState,
-    doctor_id: String,
-    day: String,
-) -> Result<bool, AppError> {
-    if !is_valid_day(&day) {
-        return Err(AppError::ParsingError("Invalid day format".to_string()));
-    }
-    let id =
-        uuid::Uuid::parse_str(&doctor_id).map_err(|e| AppError::ParsingError(e.to_string()))?;
-    let doctor = sqlx::query_as::<_, Doctor>("SELECT * FROM doctors WHERE id = $1")
-        .bind(id)
-        .fetch_one(&state.db_pool)
-        .await
-        .map_err(|e| AppError::DatabaseError(e.to_string()))?;
-    Ok(doctor.available_days.contains(&day))
-}
+// pub async fn is_doctor_available(
+//     state: SharedState,
+//     doctor_id: String,
+//     day: String,
+// ) -> Result<bool, AppError> {
+//     if !is_valid_day(&day) {
+//         return Err(AppError::ParsingError("Invalid day format".to_string()));
+//     }
+//     let id =
+//         uuid::Uuid::parse_str(&doctor_id).map_err(|e| AppError::ParsingError(e.to_string()))?;
+//     let doctor = sqlx::query_as::<_, Doctor>("SELECT * FROM doctors WHERE id = $1")
+//         .bind(id)
+//         .fetch_one(&state.db_pool)
+//         .await
+//         .map_err(|e| AppError::DatabaseError(e.to_string()))?;
+//     Ok(doctor.available_days.contains(&day))
+// }

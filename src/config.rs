@@ -3,6 +3,8 @@ use std::{env, fmt::Display, str::FromStr};
 
 // pub const DEFAULT_REFERENCE_LENGTH: usize = 12;
 
+pub const DEFAULT_APPOINTMENT_PRICE: f64 = 10000.00; // Default price for an appointment
+
 pub struct AppConfig {
     pub database_url: String,
     pub server_port: u16,

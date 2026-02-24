@@ -7,7 +7,7 @@ use uuid::Uuid;
 pub struct Patient {
     pub id: Uuid,
     pub name: String,
-    pub age: i64,
+    pub age: i32,
     pub card_id: String,
     pub gender: String,
 }
@@ -15,7 +15,7 @@ pub struct Patient {
 #[derive(Deserialize)]
 pub struct CreatePatient {
     name: String,
-    age: i64,
+    age: i32,
     gender: String,
 }
 

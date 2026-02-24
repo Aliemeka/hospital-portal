@@ -1,3 +1,4 @@
+use crate::{config::AppConfig, errors::AppError};
 use rand::{RngExt, distr::Alphanumeric, rng};
 
 pub fn create_random_string(length: usize) -> String {
@@ -19,4 +20,9 @@ pub const VALID_DAYS: [&str; 7] = [
 
 pub fn is_valid_day(day: &str) -> bool {
     VALID_DAYS.contains(&day)
+}
+
+pub fn get_paystack_config() -> Result<(String, String), AppError> {
+    let app_config = AppConfig::from_env()?;
+    Ok((app_config.paystack_url, app_config.paystack_secret_key))
 }

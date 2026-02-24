@@ -1,5 +1,7 @@
 mod app;
 mod app_state;
+mod appointments;
+mod billing;
 mod config;
 mod doctor;
 mod errors;

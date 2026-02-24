@@ -24,18 +24,18 @@ pub struct DoctorList {
     pub doctors: Vec<Doctor>,
 }
 
-#[derive(Deserialize)]
-pub struct CheckAvailability {
-    pub doctor_id: Uuid,
-    pub date: String,
-    pub day: String,
-}
+// #[derive(Deserialize)]
+// pub struct CheckAvailability {
+//     pub doctor_id: Uuid,
+//     pub date: String,
+//     pub day: String,
+// }
 
-#[derive(Deserialize)]
-pub struct CheckAvailable {
-    pub date: String,
-    pub day: String,
-}
+// #[derive(Deserialize)]
+// pub struct CheckAvailable {
+//     pub date: String,
+//     pub day: String,
+// }
 
 impl Doctor {
     pub fn new(data: CreateDoctor) -> Self {
