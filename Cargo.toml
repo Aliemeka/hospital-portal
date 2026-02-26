@@ -25,3 +25,6 @@ uuid = { version = "1.21", features = ["serde", "v4"] }
 rand = "0.10.0"
 reqwest = { version = "0.13", features = ["json"] }
 tracing = "0.1.37"
+bcrypt = "0.18.0"
+jsonwebtoken = { version = "10", features = ["aws_lc_rs"] }
+axum-extra = { version = "0.10", features = ["typed-header"] }

@@ -10,6 +10,7 @@ pub struct AppConfig {
     pub server_port: u16,
     pub paystack_url: String, // For billing and payment processing
     pub paystack_secret_key: String,
+    pub secret_key: String,
 }
 
 impl AppConfig {
@@ -18,12 +19,14 @@ impl AppConfig {
         let server_port = get_env_var("SERVER_PORT")?;
         let paystack_url = get_env_var("PAYSTACK_PAYMENT_URL")?;
         let paystack_secret_key = get_env_var("PAYSTACK_SECRET_KEY")?;
+        let secret_key = get_env_var("SECRET_KEY")?;
 
         Ok(Self {
             database_url,
             server_port,
             paystack_url,
             paystack_secret_key,
+            secret_key,
         })
     }
 }

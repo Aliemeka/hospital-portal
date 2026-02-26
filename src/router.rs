@@ -1,7 +1,7 @@
 use crate::patient::router::patient_router;
 use crate::{
-    app_state::SharedState, appointments::router::appointments_router,
-    billing::router::billing_router, doctor::router::doctor_router,
+    admin::router::admin_router, app_state::SharedState, appointments::router::appointments_router,
+    auth::router::auth_router, billing::router::billing_router, doctor::router::doctor_router,
 };
 use axum::{
     Router,
@@ -13,6 +13,8 @@ use serde_json::json;
 
 pub fn create_router(state: SharedState) -> Router {
     Router::new()
+        .nest("/auth", auth_router(state.clone()))
+        .nest("/admin", admin_router(state.clone()))
         .nest("/patients", patient_router(state.clone()))
         .nest("/doctors", doctor_router(state.clone()))
         .nest("/appointments", appointments_router(state.clone()))

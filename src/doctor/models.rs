@@ -9,6 +9,8 @@ pub struct Doctor {
     pub specialization: String,
     pub visiting_hours: String,
     pub available_days: Vec<String>,
+    pub hospital_id: Option<Uuid>,
+    pub user_id: Option<Uuid>,
 }
 
 #[derive(Deserialize)]
@@ -17,6 +19,8 @@ pub struct CreateDoctor {
     pub specialization: String,
     pub visiting_hours: String,
     pub available_days: Vec<String>,
+    pub hospital_id: Option<Uuid>,
+    pub user_id: Option<Uuid>,
 }
 
 #[derive(Serialize)]
@@ -45,6 +49,8 @@ impl Doctor {
             specialization: data.specialization,
             visiting_hours: data.visiting_hours,
             available_days: data.available_days,
+            hospital_id: data.hospital_id,
+            user_id: data.user_id,
         }
     }
 }

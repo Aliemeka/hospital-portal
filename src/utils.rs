@@ -1,6 +1,8 @@
 use crate::{config::AppConfig, errors::AppError};
+use bcrypt::{BcryptError, DEFAULT_COST, hash, verify};
 use chrono::{DateTime, Datelike, Duration, NaiveDate, Utc, Weekday};
 use rand::{RngExt, distr::Alphanumeric, rng};
+use serde_json::map;
 
 pub fn create_random_string(length: usize) -> String {
     let mut rng = rng();
@@ -86,4 +88,21 @@ pub fn combine_day_and_time(day: &str, time_str: &str) -> Result<DateTime<Utc>, 
     })?;
 
     Ok(parsed.with_timezone(&Utc))
+}
+
+pub fn hash_password(password: &str) -> Result<String, AppError> {
+    let hashed =
+        hash(password, DEFAULT_COST).map_err(|e| AppError::InternalServerError(e.to_string()))?;
+    Ok(hashed)
+}
+
+pub fn verify_password(password: &str, hashed: &str) -> Result<bool, AppError> {
+    let result =
+        verify(password, hashed).map_err(|e| AppError::InternalServerError(e.to_string()))?;
+    Ok(result)
+}
+
+pub fn get_secret_key() -> Result<String, AppError> {
+    let app_config = AppConfig::from_env()?;
+    Ok(app_config.secret_key)
 }
