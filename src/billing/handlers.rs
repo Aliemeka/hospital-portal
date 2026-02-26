@@ -22,6 +22,11 @@ pub async fn issue_bill_handler(
                 Json(json!({"error": e.to_string()})),
             )
                 .into_response(),
+            AppError::UnProcessableEntity { field, message } => (
+                StatusCode::UNPROCESSABLE_ENTITY,
+                Json(json!({"error": format!("{}: {}", field, message)})),
+            )
+                .into_response(),
             _ => (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(json!({"error": e.to_string()})),
@@ -46,6 +51,11 @@ pub async fn pay_bill_handler(
             AppError::ParsingError(e) => (
                 StatusCode::BAD_REQUEST,
                 Json(json!({"error": e.to_string()})),
+            )
+                .into_response(),
+            AppError::UnProcessableEntity { field, message } => (
+                StatusCode::UNPROCESSABLE_ENTITY,
+                Json(json!({"error": format!("{}: {}", field, message)})),
             )
                 .into_response(),
             _ => (

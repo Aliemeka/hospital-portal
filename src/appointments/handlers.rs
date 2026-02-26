@@ -63,6 +63,11 @@ pub async fn create_appointment_handler(
                 Json(json!({"error": e.to_string()})),
             )
                 .into_response(),
+            AppError::UnProcessableEntity { field, message } => (
+                StatusCode::UNPROCESSABLE_ENTITY,
+                Json(json!({"error": format!("{}: {}", field, message)})),
+            )
+                .into_response(),
             _ => (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(json!({"error": e.to_string()})),

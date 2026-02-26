@@ -1,4 +1,3 @@
-use chrono::Utc;
 use rand::seq::IteratorRandom;
 use sqlx::QueryBuilder;
 use uuid::Uuid;
@@ -7,6 +6,7 @@ use crate::appointments::models::{
     Appointment, AppointmentList, AppointmentStatus, CreateAppointmentRequest,
 };
 use crate::doctor::service::get_available_doctors;
+use crate::utils::combine_day_and_time;
 use crate::{app_state::SharedState, config::DEFAULT_APPOINTMENT_PRICE, errors::AppError};
 
 // Get all, optionally filter by eithor or both patient id or doctor id
@@ -68,7 +68,7 @@ pub async fn create_appointment(
     state: SharedState,
     payload: CreateAppointmentRequest,
 ) -> Result<Appointment, AppError> {
-    let available = get_available_doctors(state.clone(), payload.day).await?;
+    let available = get_available_doctors(state.clone(), payload.day.clone()).await?;
 
     let doctor = available
         .doctors
@@ -78,9 +78,7 @@ pub async fn create_appointment(
             AppError::NotFound("No doctors available on the requested day".to_string())
         })?;
 
-    let time = chrono::DateTime::parse_from_rfc3339(&payload.time)
-        .map(|dt| dt.with_timezone(&Utc))
-        .map_err(|e| AppError::ParsingError(e.to_string()))?;
+    let time = combine_day_and_time(&payload.day, &payload.time)?;
 
     let appointment = Appointment::new(
         payload.patient_id,
