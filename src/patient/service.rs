@@ -3,7 +3,7 @@ use crate::errors::AppError;
 use crate::patient::models::{CreatePatient, Patient, PatientList};
 
 pub async fn get_patients(state: SharedState) -> Result<PatientList, AppError> {
-    let query = "SELECT id, name, age, card_id, gender FROM patients";
+    let query = "SELECT * FROM patients";
     let patients = sqlx::query_as::<_, Patient>(query)
         .fetch_all(&state.db_pool)
         .await

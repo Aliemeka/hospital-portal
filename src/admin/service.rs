@@ -4,6 +4,7 @@ use crate::admin::models::{
 use crate::auth::headers::ClaimsHeader;
 use crate::errors::AppError;
 use crate::{admin::models::CreateHospital, app_state::SharedState};
+use sqlx::Error as SqlxError;
 use uuid::Uuid;
 
 pub async fn create_new_hospital_and_admin(
@@ -67,7 +68,12 @@ pub async fn get_hospital_by_id(
         .bind(hospital_id)
         .fetch_one(&state.db_pool)
         .await
-        .map_err(|e| AppError::DatabaseError(e.to_string()))?;
+        .map_err(|e| match e {
+            SqlxError::RowNotFound => {
+                AppError::NotFound(format!("Hospital with id {} not found", hospital_id))
+            }
+            _ => AppError::DatabaseError(e.to_string()),
+        })?;
 
     Ok(hospital)
 }
@@ -100,7 +106,7 @@ pub async fn update_hospital_info(
         .fetch_one(&state.db_pool)
         .await
         .map_err(|e| match e {
-            sqlx::Error::RowNotFound => {
+            SqlxError::RowNotFound => {
                 AppError::NotFound(format!("Hospital with id {} not found", hospital_id))
             }
             _ => AppError::DatabaseError(e.to_string()),

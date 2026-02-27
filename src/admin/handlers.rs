@@ -29,10 +29,10 @@ pub async fn get_hospital_info_handler(
 ) -> impl IntoResponse {
     let hospital_id = match uuid::Uuid::parse_str(&hospital_id) {
         Ok(id) => id,
-        Err(e) => {
+        Err(_) => {
             return (
                 StatusCode::BAD_REQUEST,
-                Json(json!({"error": format!("Invalid hospital_id: {}", e)})),
+                Json(json!({"error": format!("Invalid hospital_id")})),
             )
                 .into_response();
         }
@@ -61,10 +61,10 @@ pub async fn update_hospital_info_handler(
 ) -> impl IntoResponse {
     let hospital_id = match uuid::Uuid::parse_str(&hospital_id) {
         Ok(id) => id,
-        Err(e) => {
+        Err(_) => {
             return (
                 StatusCode::BAD_REQUEST,
-                Json(json!({"error": format!("Invalid hospital_id: {}", e)})),
+                Json(json!({"error": format!("Invalid hospital_id")})),
             )
                 .into_response();
         }

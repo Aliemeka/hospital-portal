@@ -8,9 +8,9 @@ use std::sync::Arc;
 
 pub fn admin_router(state: SharedState) -> Router<Arc<AppState>> {
     Router::new()
-        .route("/hospital", post(create_hospital_and_admin_handler))
+        .route("/hospitals", post(create_hospital_and_admin_handler))
         .route(
-            "/hospital/:hospital_id",
+            "/hospitals/{hospital_id}",
             get(get_hospital_info_handler).put(update_hospital_info_handler),
         )
         .with_state(state)
