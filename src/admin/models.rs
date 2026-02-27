@@ -47,6 +47,13 @@ pub struct CreateHospital {
     pub admin_password: String,
 }
 
+#[derive(Deserialize)]
+pub struct UpdateHospital {
+    pub name: Option<String>,
+    pub address: Option<String>,
+    pub phone: Option<String>,
+}
+
 #[derive(Serialize)]
 pub struct HospitalWithAdminEmail {
     pub hospital: Hospital,
